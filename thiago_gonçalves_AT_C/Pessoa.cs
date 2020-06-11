@@ -15,5 +15,19 @@ namespace thiago_gonçalves_AT_C
             Nome = nome;
             DataDeAniversario = data;
         }
+
+        public int ProximoAniversario()
+        {
+            DateTime momento = DateTime.Today;
+            DateTime dataAniversario = new DateTime(momento.Year, DataDeAniversario.Month, DataDeAniversario.Day);
+
+            if (dataAniversario < momento)
+            {
+                dataAniversario = dataAniversario.AddYears(1);
+            }
+
+            int diferancaData = (dataAniversario - momento).Days;
+            return diferancaData;
+        }
     }
 }

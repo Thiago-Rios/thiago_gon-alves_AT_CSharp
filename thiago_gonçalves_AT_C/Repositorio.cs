@@ -88,6 +88,14 @@ namespace thiago_gonçalves_AT_C
                     select x);
         }
 
+        public static IEnumerable<Pessoa> BuscarTodasAsPessoas(DateTime dataDeHoje)
+        {
+            return (from x in BuscarTodasAsPessoas()
+                    where x.DataDeAniversario.Day.Equals(dataDeHoje.Day) && x.DataDeAniversario.Month.Equals(dataDeHoje.Month)
+                    orderby x.DataDeAniversario
+                    select x);
+        }
+
         public static Pessoa BuscarPessoaPelo(int id)
         {
             return (from x in BuscarTodasAsPessoas()

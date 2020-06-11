@@ -14,7 +14,8 @@ namespace thiago_gonçalves_AT_C
 
         public static void MenuPrincipal()
         {
-
+            EscreverNaTela("====== Aniversariantes do dia ======");
+            AniversariantesDoDia();
             EscreverNaTela("====== Selecione uma operação ======");
             EscreverNaTela("1 - Adicionar nova pessoa");
             EscreverNaTela("2 - Consultar pessoas");
@@ -43,6 +44,24 @@ namespace thiago_gonçalves_AT_C
                     break;
                 case '5': EscreverNaTela("Saindo do programa..."); break;
                 default: EscreverNaTela("Opção inexistente"); break;
+            }
+        }
+
+        private static void AniversariantesDoDia()
+        {
+            DateTime hoje = DateTime.Today;
+            var listaDeAniversariantes = Repositorio.BuscarTodasAsPessoas(hoje);
+
+            if (listaDeAniversariantes.Count() == 0)
+            {
+                EscreverNaTela("Não há aniversariantes adicionados hoje");
+            }
+            else
+            {
+                foreach (var pessoa in listaDeAniversariantes)
+                {
+                    EscreverNaTela($"Nome: {pessoa.Nome}");
+                }
             }
         }
 
@@ -93,7 +112,7 @@ namespace thiago_gonçalves_AT_C
 
                 foreach (var pessoa in pessoasEncontradas)
                 {
-                    EscreverNaTela($"Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario}");
+                    EscreverNaTela($"Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
                 }
             }
             else
@@ -108,7 +127,7 @@ namespace thiago_gonçalves_AT_C
         {
             foreach (var pessoa in Repositorio.BuscarTodasAsPessoas())
             {
-                EscreverNaTela($"Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario}");
+                EscreverNaTela($"Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
             }
 
             EscreverNaTela("Pressione qualquer tecla para continuar...");
