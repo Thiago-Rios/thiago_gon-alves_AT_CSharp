@@ -6,13 +6,20 @@ namespace thiago_gonçalves_AT_C
 {
     class Pessoa
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string Nome { get; set; }
         public DateTime DataDeAniversario { get; set; }
 
         public Pessoa(string nome, DateTime data)
         {
             Nome = nome;
+            DataDeAniversario = data;
+        }
+
+        public Pessoa(int id,string nome, DateTime data)
+        {
+            Nome = nome;
+            Id = id;
             DataDeAniversario = data;
         }
 

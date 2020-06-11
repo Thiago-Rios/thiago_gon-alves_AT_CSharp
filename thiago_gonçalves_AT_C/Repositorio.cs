@@ -11,7 +11,7 @@ namespace thiago_gonçalves_AT_C
 
         public static void Salvar(Pessoa pessoa)
         {
-            if (!PessoaJaEstaCadastrada(pessoa))
+            if (PessoaJaEstaCadastrada(pessoa))
             {
                 //AlterarExistente(pessoa);
                 Console.WriteLine("Pessoa já esta cadastrada");
@@ -59,10 +59,11 @@ namespace thiago_gonçalves_AT_C
             {
                 string[] dadosDaPessoa = pessoas[i].Split(',');
 
-                string nome = dadosDaPessoa[0];
-                DateTime dataDeAniversario = Convert.ToDateTime(dadosDaPessoa[1]);
+                int id = int.Parse(dadosDaPessoa[0]);
+                string nome = dadosDaPessoa[1];
+                DateTime dataDeAniversario = Convert.ToDateTime(dadosDaPessoa[2]);
 
-                Pessoa funcionario = new Pessoa(nome, dataDeAniversario);
+                Pessoa funcionario = new Pessoa(id, nome, dataDeAniversario);
 
                 listaPessoas.Add(funcionario);
             }
@@ -107,7 +108,7 @@ namespace thiago_gonçalves_AT_C
         {
             string nomeDoArquivo = ObterNomeArquivo();
 
-            string formato = $"{pessoa.Nome},{pessoa.DataDeAniversario};";
+            string formato = $"{pessoa.Id},{pessoa.Nome},{pessoa.DataDeAniversario};";
 
             File.AppendAllText(nomeDoArquivo, formato);
         }

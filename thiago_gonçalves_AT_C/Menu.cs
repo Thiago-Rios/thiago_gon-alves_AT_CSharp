@@ -112,7 +112,7 @@ namespace thiago_gonçalves_AT_C
 
                 foreach (var pessoa in pessoasEncontradas)
                 {
-                    EscreverNaTela($"Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
+                    EscreverNaTela($"{pessoa.Id}- Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
                 }
             }
             else
@@ -127,7 +127,7 @@ namespace thiago_gonçalves_AT_C
         {
             foreach (var pessoa in Repositorio.BuscarTodasAsPessoas())
             {
-                EscreverNaTela($"Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
+                EscreverNaTela($"{pessoa.Id}- Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
             }
 
             EscreverNaTela("Pressione qualquer tecla para continuar...");
@@ -147,6 +147,14 @@ namespace thiago_gonçalves_AT_C
             DateTime dataDeAniversario = DateTime.Parse(Console.ReadLine());
 
             var pessoa = new Pessoa(nome, dataDeAniversario);
+
+            var pessoas = Repositorio.BuscarTodasAsPessoas();
+
+            foreach (var item in pessoas)
+            {
+                Pessoa ultimoNaLista = pessoas.Last(x => x.Id == item.Id);
+                pessoa.Id = ultimoNaLista.Id + 1;
+            }
 
             try
             {
