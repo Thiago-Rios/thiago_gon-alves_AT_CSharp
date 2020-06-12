@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace thiago_gonçalves_AT_C
+namespace Biblioteca.Pessoa
 {
     public class Pessoa
     {

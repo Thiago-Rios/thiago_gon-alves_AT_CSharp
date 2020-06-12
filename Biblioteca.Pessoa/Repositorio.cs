@@ -4,15 +4,47 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace thiago_gonçalves_AT_C
+namespace Biblioteca.Pessoa
 {
-    public class Repositorio
+    public class Repositorio : IRepositorio
     {
-        public static void Salvar(Pessoa pessoa)
+
+        public void Deletar(int id)
+        {
+            var pessoas = BuscarTodasAsPessoas();
+            List<Pessoa> listaFiltrada = new List<Pessoa>();
+            foreach(var pessoa in pessoas) 
+            {
+                if(pessoa.Id != id)
+                {
+                    listaFiltrada.Add(pessoa);
+                }
+            }
+            RecriaArquivo(listaFiltrada);
+        }
+
+        public void Editar(Pessoa pessoaEscolhida)
+        {
+            var pessoas = BuscarTodasAsPessoas();
+            List<Pessoa> listaFiltrada = new List<Pessoa>();
+            foreach (var pessoa in pessoas)
+            {
+                if (pessoa.Id == pessoaEscolhida.Id)
+                {
+                    listaFiltrada.Add(pessoaEscolhida);
+                }
+                else
+                {
+                    listaFiltrada.Add(pessoa);
+                }
+            }
+            RecriaArquivo(listaFiltrada);
+        }
+
+        public void Salvar(Pessoa pessoa)
         {
             if (PessoaJaEstaCadastrada(pessoa))
             {
-                //AlterarExistente(pessoa);
                 Console.WriteLine("Pessoa já esta cadastrada");
             }
             else
@@ -21,7 +53,7 @@ namespace thiago_gonçalves_AT_C
             }
         }
 
-        private static bool PessoaJaEstaCadastrada(Pessoa pessoa)
+        public bool PessoaJaEstaCadastrada(Pessoa pessoa)
         {
             var id = pessoa.Id;
 
@@ -37,7 +69,7 @@ namespace thiago_gonçalves_AT_C
             }
         }
 
-        public static IEnumerable<Pessoa> BuscarTodasAsPessoas()
+        public IEnumerable<Pessoa> BuscarTodasAsPessoas()
         {
             string nomeDoArquivo = ObterNomeArquivo();
 
@@ -70,7 +102,7 @@ namespace thiago_gonçalves_AT_C
             return listaPessoas;
         }
 
-        private static string ObterNomeArquivo()
+        public string ObterNomeArquivo()
         {
             var pastaDesktop = Environment.SpecialFolder.Desktop;
 
@@ -80,7 +112,7 @@ namespace thiago_gonçalves_AT_C
             return localDaPastaDesktop + nomeDoArquivo;
         }
 
-        public static IEnumerable<Pessoa> BuscarTodasAsPessoas(string nome)
+        public IEnumerable<Pessoa> BuscarTodasAsPessoas(string nome)
         {
             return (from x in BuscarTodasAsPessoas()
                     where x.Nome.Contains(nome, StringComparison.InvariantCultureIgnoreCase)
@@ -88,7 +120,7 @@ namespace thiago_gonçalves_AT_C
                     select x);
         }
 
-        public static IEnumerable<Pessoa> BuscarTodasAsPessoas(DateTime dataDeHoje)
+        public IEnumerable<Pessoa> BuscarTodasAsPessoas(DateTime dataDeHoje)
         {
             return (from x in BuscarTodasAsPessoas()
                     where x.DataDeAniversario.Day.Equals(dataDeHoje.Day) && x.DataDeAniversario.Month.Equals(dataDeHoje.Month)
@@ -96,14 +128,33 @@ namespace thiago_gonçalves_AT_C
                     select x);
         }
 
-        public static Pessoa BuscarPessoaPelo(int id)
+        public Pessoa BuscarPessoaPelo(int id)
         {
             return (from x in BuscarTodasAsPessoas()
                     where x.Id == id
                     select x).FirstOrDefault();
         }
 
-        protected static void CriarNovo(Pessoa pessoa)
+        public void RecriaArquivo(List<Pessoa> pessoas)
+        {
+            string nomeDoArquivo = ObterNomeArquivo();
+
+            File.Delete(nomeDoArquivo);
+
+            FileStream arquivo;
+            if (!File.Exists(nomeDoArquivo))
+            {
+                arquivo = File.Create(nomeDoArquivo);
+                arquivo.Close();
+            }
+
+            foreach (var pessoa in pessoas)
+            {
+                CriarNovo(pessoa);
+            }
+        }
+
+        public void CriarNovo(Pessoa pessoa)
         {
             string nomeDoArquivo = ObterNomeArquivo();
 

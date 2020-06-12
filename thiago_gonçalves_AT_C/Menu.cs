@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Biblioteca.Pessoa;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,22 +36,75 @@ namespace thiago_gonçalves_AT_C
                     ConsultarPessoas();
                     break;
                 case '3':
-                    //EditarPessoa();
-                    EscreverNaTela("Quero naum :)");
+                    EditarPessoa();
                     break;
                 case '4':
-                    //ExcluirPessoa();
-                    EscreverNaTela("Quero naum :>)");
+                    ExcluirPessoa();
                     break;
                 case '5': EscreverNaTela("Saindo do programa..."); break;
                 default: EscreverNaTela("Opção inexistente"); break;
             }
         }
 
+        private static void EditarPessoa()
+        {
+            LimparTela();
+            EscreverNaTela("=====================================");
+            foreach (var pessoa in repositorio.BuscarTodasAsPessoas())
+            {
+                EscreverNaTela($"{pessoa.Id}- Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
+            }
+            EscreverNaTela("======= Insira o Id da pessoa =======");
+            int idEscolhido = int.Parse(Console.ReadLine());
+
+            foreach(var pessoa in repositorio.BuscarTodasAsPessoas())
+            {
+                if (pessoa.Id == idEscolhido)
+                {
+                    EscreverNaTela("Digite o novo nome:");
+                    string novoNome = Console.ReadLine();
+
+                    EscreverNaTela("Digite a nova data no modelo dd/mm/aaaa:");
+                    DateTime novaData = DateTime.Parse(Console.ReadLine());
+
+                    Pessoa pessoaEditada = repositorio.BuscarPessoaPelo(idEscolhido);
+
+                    Pessoa editado = new Pessoa(pessoaEditada.Id, novoNome, novaData);
+
+                    repositorio.Editar(editado);
+
+                    EscreverNaTela("Pessoa editada...");
+                }
+            }
+            EscreverNaTela("Pressione qualquer tecla para continuar...");
+            Console.ReadKey();
+            LimparTela();
+            MenuPrincipal();
+        }
+
+        private static void ExcluirPessoa()
+        {
+            LimparTela();
+            EscreverNaTela("=====================================");
+            foreach (var pessoa in repositorio.BuscarTodasAsPessoas())
+            {
+                EscreverNaTela($"{pessoa.Id}- Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
+            }           
+            EscreverNaTela("======= Insira o Id da pessoa =======");
+            int idEscolhido = int.Parse(Console.ReadLine());
+            repositorio.Deletar(idEscolhido);
+            EscreverNaTela("Pessoa deletada...");
+            EscreverNaTela("Pressione qualquer tecla para continuar...");
+            Console.ReadKey();
+            LimparTela();
+            MenuPrincipal();
+
+        }
+
         private static void AniversariantesDoDia()
         {
             DateTime hoje = DateTime.Today;
-            var listaDeAniversariantes = Repositorio.BuscarTodasAsPessoas(hoje);
+            var listaDeAniversariantes = repositorio.BuscarTodasAsPessoas(hoje);
 
             if (listaDeAniversariantes.Count() == 0)
             {
@@ -87,7 +141,7 @@ namespace thiago_gonçalves_AT_C
                     break;
 
                 case "2":
-                    ExibirTodosOsFuncionarios();
+                    ExibirTodasAsPessoas();
                     break;
 
                 default:
@@ -102,33 +156,38 @@ namespace thiago_gonçalves_AT_C
             EscreverNaTela("Entre com o nome da pessoa:");
             string nome = Console.ReadLine();
 
-            var pessoasEncontradas = Repositorio.BuscarTodasAsPessoas(nome);
+            var pessoasEncontradas = repositorio.BuscarTodasAsPessoas(nome);
 
             int quantidadeDePessoasEncontradas = pessoasEncontradas.Count();
 
             if (quantidadeDePessoasEncontradas > 0)
             {
-                EscreverNaTela("====== Pessoas encontradas ======");
+                EscreverNaTela("======== Pessoas encontradas ========");
 
                 foreach (var pessoa in pessoasEncontradas)
                 {
                     EscreverNaTela($"{pessoa.Id}- Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
                 }
+                EscreverNaTela("=====================================");
             }
             else
             {
                 EscreverNaTela("Nenhum pessoa foi encontrada para o nome: " + nome);
             }
-
+            EscreverNaTela("Pressione qualquer tecla para continuar...");
+            Console.ReadKey();
+            LimparTela();
             MenuPrincipal();
         }
 
-        private static void ExibirTodosOsFuncionarios()
+        private static void ExibirTodasAsPessoas()
         {
-            foreach (var pessoa in Repositorio.BuscarTodasAsPessoas())
+            EscreverNaTela("=====================================");
+            foreach (var pessoa in repositorio.BuscarTodasAsPessoas())
             {
                 EscreverNaTela($"{pessoa.Id}- Nome: {pessoa.Nome} || Aniversário: {pessoa.DataDeAniversario} || Dias restantes: {pessoa.ProximoAniversario()}");
             }
+            EscreverNaTela("=====================================");
 
             EscreverNaTela("Pressione qualquer tecla para continuar...");
             Console.ReadKey();
@@ -148,7 +207,7 @@ namespace thiago_gonçalves_AT_C
 
             var pessoa = new Pessoa(nome, dataDeAniversario);
 
-            var pessoas = Repositorio.BuscarTodasAsPessoas();
+            var pessoas = repositorio.BuscarTodasAsPessoas();
 
             foreach (var item in pessoas)
             {
@@ -158,7 +217,7 @@ namespace thiago_gonçalves_AT_C
 
             try
             {
-                Repositorio.Salvar(pessoa);
+                repositorio.Salvar(pessoa);
             }
             catch (Exception e)
             {
@@ -172,10 +231,11 @@ namespace thiago_gonçalves_AT_C
 
             MenuPrincipal();
         }
-
         private static void LimparTela()
         {
             Console.Clear();
         }
+
+        private static IRepositorio repositorio = new Repositorio();
     }
 }
