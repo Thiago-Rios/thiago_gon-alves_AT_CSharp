@@ -70,11 +70,6 @@ namespace thiago_gonçalves_AT_C
             return listaPessoas;
         }
 
-        public object BuscarTodasAsPessoas(DateTime hoje)
-        {
-            throw new NotImplementedException();
-        }
-
         private static string ObterNomeArquivo()
         {
             var pastaDesktop = Environment.SpecialFolder.Desktop;
