@@ -36,11 +36,11 @@ namespace thiago_gonçalves_AT_C
                     break;
                 case '3':
                     //EditarPessoa();
-                    EscreverNaTela("Método faltando");
+                    EscreverNaTela("Quero naum :)");
                     break;
                 case '4':
                     //ExcluirPessoa();
-                    EscreverNaTela("Método faltando");
+                    EscreverNaTela("Quero naum :>)");
                     break;
                 case '5': EscreverNaTela("Saindo do programa..."); break;
                 default: EscreverNaTela("Opção inexistente"); break;

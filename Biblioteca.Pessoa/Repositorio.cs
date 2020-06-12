@@ -6,9 +6,8 @@ using System.Text;
 
 namespace thiago_gonçalves_AT_C
 {
-    class Repositorio
+    public class Repositorio
     {
-
         public static void Salvar(Pessoa pessoa)
         {
             if (PessoaJaEstaCadastrada(pessoa))
@@ -69,6 +68,11 @@ namespace thiago_gonçalves_AT_C
             }
 
             return listaPessoas;
+        }
+
+        public object BuscarTodasAsPessoas(DateTime hoje)
+        {
+            throw new NotImplementedException();
         }
 
         private static string ObterNomeArquivo()

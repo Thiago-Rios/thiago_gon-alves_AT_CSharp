@@ -4,7 +4,7 @@ using System.Text;
 
 namespace thiago_gonçalves_AT_C
 {
-    class Pessoa
+    public class Pessoa
     {
         public int Id { get; set; }
         public string Nome { get; set; }
